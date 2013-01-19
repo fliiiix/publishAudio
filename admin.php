@@ -6,17 +6,10 @@
   * LOGIN stuff
   */
   if (isset($_POST["username"]) && isset($_POST["passwort"])) {
-    // $error = "";
-    // if($_POST["username"] == "")
-    // {
-    //   $error .= "Kein Username! <br />"
-    // }
-    // if($_POST["passwort"] == "")
-    // {
-    //   $error .= "Kein Passwort! <br />"
-    // }
-
-    Login($_POST["username"], $_POST["passwort"]);
+    if(!Login($_POST["username"], $_POST["passwort"]))
+    {
+        $loginError = "Falsches Passwort oder Username!";
+    }
   }
 ?>  
 <!DOCTYPE html>
@@ -88,8 +81,57 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="../assets/js/jquery.js"></script>
-    <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="assets/js/jquery.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+      $( document ).ready( function() {
+        $('#sampleFile').change(function() {
+          $('#sampleFileIco').html('<img src="assets/img/accepted.png" alt="accepted">');
+          check();
+        });
+        $('#fullFile').change(function() {
+          $('#fullFileIco').html('<img src="assets/img/accepted.png" alt="accepted">');
+          check();
+        });
 
+        $('#titel').keyup(function() {
+          $(this).change();
+        });
+
+        $('#titel').change(function() {
+          if ($('#titel').val().length >= 5) {
+            $('#titelIco').html('<img src="assets/img/accepted.png" alt="accepted">');
+          }
+          else{
+            $('#titelIco').html('<img src="assets/img/cross.png" alt="not accepted">');
+          };
+          check();
+        });
+      });
+
+
+      function check () {
+        var enableSave = true;
+        if($('#sampleFile').val() == '') { 
+          enableSave = false;
+        }
+        if($('#fullFile').val() == '') { 
+          enableSave = false;
+        }
+        if($('#titel').val().length < 5) { 
+          enableSave = false;
+        }
+        if (enableSave) {
+            $('#saveBeat').addClass('btn-primary');
+            $('#saveBeat').removeAttr('disabled');
+        };
+        if (!enableSave) {
+          $('#saveBeat').attr('disabled','disabled');
+          $('#saveBeat').removeClass('btn-primary');
+        };
+      }
+    </script>
   </body>
 </html>
+
+
